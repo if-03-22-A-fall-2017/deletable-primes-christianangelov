@@ -17,56 +17,48 @@
 
  unsigned long remove_digit(int index, unsigned long n)
  {
-   long ret = n;
-   int d = pow(10, index +1);
-   int m = pow(10, index);
-   ret = n/d;
-   ret *= m;
-   ret += n % m;
-   return ret;
+   long result = 0;
+   int divisor = pow(10, index +1);
+   int multply = pow(10, index);
+   result = n / divisor;
+   result *= multply;
+   result += n % multply;
+   return result;
  }
- int get_ways(unsigned long p)
- {
-   int ways = 0;
-   if(p < 10)
-   {
-     if(is_prime(p))
-     {
-       return 1;
-     }
-     return 0;
-   }
- int count = 0;
- int len = get_length(p);
- while (count < len) {
-   long n = remove_digit(count, p);
-   if(is_prime(n))
-   {
-     int aa = get_ways(n);
-     ways += aa;
-   }
-   count++;
- }
- return ways;
-}
-bool is_prime(long number)
+int get_ways(unsigned long p)
 {
-  if(number == 2)
+  int ways = 0;
+  if(p < 10)
   {
-    return true;
-  }
-  if(number % 2 == 0)
-  {
-    return false;
-  }
-  for (int i = 3; i <= number/2; i++) {
-    if(number % i == 0)
+    if(is_prime(p))
     {
-      return false;
+      return 1;
     }
-    i++;
+    return 0;
   }
-  return true;
+  int count = 0;
+  int len = get_length(p);
+
+  while (count < len) {
+    long n = remove_digit(count, p);
+    if(is_prime(n))
+    {
+      int aa = get_ways(n);
+      ways += aa;
+    }
+    count++;
+  }
+  return ways;
+}
+bool is_prime(long p)
+{
+   int c;
+   for ( c = 2 ; c <= p - 1 ; c++ )
+   {
+      if ( p%c == 0 )
+     return false;
+   }
+   return true;
 }
 int get_length(long num)
 {
