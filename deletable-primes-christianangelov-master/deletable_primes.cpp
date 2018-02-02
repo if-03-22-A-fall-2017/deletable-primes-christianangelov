@@ -17,26 +17,64 @@
 
  unsigned long remove_digit(int index, unsigned long n)
  {
-   int p = pow(10,index +1);
-   int mod = n % p;
-   
-   if(index == 0)
-   {
-     return (n - mod)/p;
-   }
-   else
-
-   return 0;
-   //return (345 - 345%pow(10,index+1) )/pow(10,index+1) ;
-
-   //345 % 10 = 5
-   //345 - 5 = 340 / 10^2
+   long ret = n;
+   int d = pow(10, index +1);
+   int m = pow(10, index);
+   ret = n/d;
+   ret *= m;
+   ret += n % m;
+   return ret;
  }
  int get_ways(unsigned long p)
  {
-   return 0;
+   int ways = 0;
+   if(p < 10)
+   {
+     if(is_prime(p))
+     {
+       return 1;
+     }
+     return 0;
+   }
+ int count = 0;
+ int len = get_length(p);
+ while (count < len) {
+   long n = remove_digit(count, p);
+   if(is_prime(n))
+   {
+     int aa = get_ways(n);
+     ways += aa;
+   }
+   count++;
  }
-//    3     4       5
-// 10^2    10^1   10^0
-//350 +9
-//-> 35 * 10
+ return ways;
+}
+bool is_prime(long number)
+{
+  if(number == 2)
+  {
+    return true;
+  }
+  if(number % 2 == 0)
+  {
+    return false;
+  }
+  for (int i = 3; i <= number/2; i++) {
+    if(number % i == 0)
+    {
+      return false;
+    }
+    i++;
+  }
+  return true;
+}
+int get_length(long num)
+{
+  int i = 0;
+  int j= 0;
+  do {
+    i++;
+    j = num / pow(10,i);
+  } while(j != 0);
+  return i;
+}
